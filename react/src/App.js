@@ -1,8 +1,8 @@
-import Timeline from './containers/Timeline';
+import Slider from './containers/Slider';
 
 function App() {
   return (
-    <Timeline />
+    <Slider />
   );
 }
 

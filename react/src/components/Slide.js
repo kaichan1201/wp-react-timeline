@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react'
 import {css} from '@emotion/react'
+import { animated } from '@react-spring/web'
 
 const SlideCSS = css`
+                position: absolute;
                 height: 100%;
                 width: 100%;
-                color: #c1cee3;
                 background-color: #3b434f;
+                color: white;
                 `
 
 const textWrapCSS = css`
@@ -20,15 +22,15 @@ const wordContentCSS = css`
                 text-align: justify;
                 `
 
-const Slide = ({post}) => {
+const Slide = ({post, style}) => {
     return (
-        <div css={SlideCSS}>
+        <animated.div css={SlideCSS} style={style}>
             <div css={textWrapCSS}>
                 <p>{post.acf.event_date}</p>
                 <h1>{post.title.rendered}</h1>
                 <p css={wordContentCSS}>{post.acf.timeline_text}</p>                
             </div>
-        </div>
+        </animated.div>
     )
 }
 
