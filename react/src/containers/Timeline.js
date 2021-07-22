@@ -7,6 +7,7 @@ import SliderContent from '../components/SliderContent'
 import Slide from '../components/Slide'
 import Arrow from '../components/Arrow'
 import Dots from '../components/Dots'
+import RelatedPosts from './RelatedPosts'
 
 const Timeline = () => {
     const [loaded, setLoaded] = useState(false)
@@ -15,7 +16,8 @@ const Timeline = () => {
     const slideWidth = 50;
 
     useEffect(() => {
-        axios.get('/posts')
+        axios.get('http://localhost:8000/wp-json/wp/v2/posts')
+        // axios.get('https://covidstory.tw/wp-json/wp/v2/posts')
             .then(msg => {
                 msg = msg.data.filter(d => d.acf.add_to_timeline)
                 setPosts(msg)
@@ -32,30 +34,36 @@ const Timeline = () => {
         setActiveIdx(newIdx)
     }
 
+    const SliderCSS = css`
+        position: relative;
+        height: 70vh;
+        width: ${slideWidth}vw;
+        margin: 0 auto;
+        overflow: hidden;
+    `
+    const MainCSS = css`
+        display: flex;
+        flex-direction: column;
+    `
+
     return (
         <>
         {!loaded ? <p>loading...</p> :
-            // The Slider
-            <div css={SliderCSS}>
-                <SliderContent activeIdx={activeIdx}
-                            slideWidth={slideWidth}
-                            totalWidth={slideWidth * posts.length}>
-                    {posts.map((p, i) => <Slide key={i} post={p} />)}
-                </SliderContent>
-                <Arrow direction="left" handleClick={prevSlide}/>
-                <Arrow direction="right" handleClick={nextSlide}/>
-                <Dots posts={posts} activeIdx={activeIdx} setActiveIdx={setActiveIdx}/>
+            <div css={MainCSS}>
+                <div css={SliderCSS}>
+                    <SliderContent activeIdx={activeIdx}
+                                slideWidth={slideWidth}
+                                totalWidth={slideWidth * posts.length}>
+                        {posts.map((p, i) => <Slide key={i} post={p} />)}
+                    </SliderContent>
+                    <Arrow direction="left" handleClick={prevSlide}/>
+                    <Arrow direction="right" handleClick={nextSlide}/>
+                    <Dots posts={posts} activeIdx={activeIdx} setActiveIdx={setActiveIdx}/>
+                </div>
+                <RelatedPosts posts={posts} activeIdx={activeIdx}/>
             </div>}
         </>
     )
 }
-
-const SliderCSS = css`
-  position: relative;
-  height: 70vh;
-  width: 50vw;
-  margin: 0 auto;
-  overflow: hidden;
-`
 
 export default Timeline
