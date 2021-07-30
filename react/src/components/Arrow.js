@@ -24,7 +24,7 @@ const Arrow = ({direction, handleClick}) => {
                 }
             `}
         >
-            {direction === 'right' ? <IoIosArrowForward size={42}/> : <IoIosArrowBack size={42}/>}
+            {direction === 'right' ? <IoIosArrowForward size={42} color="white"/> : <IoIosArrowBack size={42} color="white"/>}
         </div>
     )
 }

@@ -7,6 +7,6 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('my-timeline-react')
-  // document.getElementById('root')
+  // document.getElementById('my-timeline-react')
+  document.getElementById('root')
 );

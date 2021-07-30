@@ -1,23 +1,19 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { css } from '@emotion/react'
-import {useSpringRef, useTransition } from 'react-spring'
-import axios from 'axios'
+import {useTransition } from 'react-spring'
 
 import Arrow from '../components/Arrow'
 import Slide from '../components/Slide'
+import Related from './Related'
+import Timeline from './Timeline'
 
-const Slider = () => {
-    const [loaded, setLoaded] = useState(false)
-    const [posts, setPosts] = useState([])
+const Slider = ({posts}) => {
     const [[activeIdx, dir], setActiveState] = useState([0, -1])
-    const transRef = useSpringRef()
-
-    const transitions = useTransition(activeIdx, {
-        ref: transRef,
+    const transitions = useTransition(posts[activeIdx], {
         from: {
             opacity: 0,
-            transform: `translate3d(${dir === -1 ? 100 : -100}%,0,0) scale(0.5)`,
+            transform: `translate3d(${dir === -1 ? 50 : -50}%,0,0) scale(0.5)`,
         },
         enter: {
             opacity: 1,
@@ -25,22 +21,9 @@ const Slider = () => {
         },
         leave: {
             opacity: 0,
-            transform: `translate3d(${dir === 1 ? 50 : -50}%,0,0) scale(0.5)`,
+            transform: `translate3d(${dir === 1 ? 25 : -25}%,0,0) scale(0.5)`,
         }
     })
-    useEffect(() => {
-        transRef.start()
-    }, [transRef, activeIdx])
-
-    useEffect(() => {
-        axios.get('http://localhost:8000/wp-json/wp/v2/posts')
-        // axios.get('https://covidstory.tw/wp-json/wp/v2/posts')
-            .then(msg => {
-                msg = msg.data.filter(d => d.acf.add_to_timeline)
-                setPosts(msg)
-                setLoaded(true)
-            }).catch(err => {console.log(err)})
-    }, [])
 
     const nextSlide = () => {
         setActiveState([(activeIdx + 1) % posts.length, -1])
@@ -48,27 +31,38 @@ const Slider = () => {
     const prevSlide = () => {
         setActiveState([ (activeIdx - 1 + posts.length) % posts.length, 1])    
     }
+    const switchToSlide = (idx) => () => setActiveState([idx, idx > activeIdx ? -1 : 1])
 
+    const timer = useRef(null)
+    useEffect(() => {
+        clearTimeout(timer.current)
+        timer.current = setTimeout(() => nextSlide(), 5000)
+        return () => clearTimeout(timer.current)
+    }, [activeIdx])
+
+    const mainCSS = css`
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    `
     const SliderCSS = css`
         position: relative;
-        left: 25%;
         height: 70vh;
         width: 50vw;
     `
 
     return (
-        <>
-        {!loaded ? <p>loading...</p> :
-            <div>
-                <div css={SliderCSS}>
-                    {transitions((style, i) => (
-                        <Slide post={posts[i]} style={style} />
-                    ))}
-                    <Arrow direction="left" handleClick={prevSlide}/>
-                    <Arrow direction="right" handleClick={nextSlide}/>
-                </div>
-            </div>}
-        </>
+        <div css={mainCSS}>
+            <div css={SliderCSS}>
+                {transitions((style, post) => (
+                    <Slide post={post} style={style} />
+                ))}
+                <Arrow direction="left" handleClick={prevSlide}/>
+                <Arrow direction="right" handleClick={nextSlide}/>
+            </div>
+            <Timeline posts={posts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
+            <Related posts={posts} activeIdx={activeIdx}/>
+        </div>
     )
 }
 
