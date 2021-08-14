@@ -16,6 +16,7 @@ const SlideCSS = css`
 `
 
 const textWrapCSS = css`
+    height: 100%;
     margin-left: 2vw;
     margin-right: 2vw;
     color: white;
@@ -24,6 +25,8 @@ const textWrapCSS = css`
 const wordContentCSS = css`
     margin-left: 5vw;
     margin-right: 5vw;
+    height: 60%;
+    overflow: hidden;
     text-align: justify;
 `
 
@@ -33,7 +36,9 @@ const Slide = ({post, style}) => {
             <div css={textWrapCSS}>
                     <p>{post.acf.event_date}</p>
                     <h1>{post.title.rendered}</h1>
-                    <p css={wordContentCSS}>{post.acf.timeline_text}</p>                
+                    <div css={wordContentCSS}>
+                        <p>{post.acf.timeline_text}</p>
+                    </div>
             </div>
         </animated.div>
     )

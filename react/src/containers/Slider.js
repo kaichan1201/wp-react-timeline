@@ -22,7 +22,8 @@ const Slider = ({posts}) => {
         leave: {
             opacity: 0,
             transform: `translate3d(${dir === 1 ? 25 : -25}%,0,0) scale(0.5)`,
-        }
+        },
+        config: {friction: 17}
     })
 
     const nextSlide = () => {
@@ -33,12 +34,12 @@ const Slider = ({posts}) => {
     }
     const switchToSlide = (idx) => () => setActiveState([idx, idx > activeIdx ? -1 : 1])
 
-    const timer = useRef(null)
-    useEffect(() => {
-        clearTimeout(timer.current)
-        timer.current = setTimeout(() => nextSlide(), 5000)
-        return () => clearTimeout(timer.current)
-    }, [activeIdx])
+    // const timer = useRef(null)
+    // useEffect(() => {
+    //     clearTimeout(timer.current)
+    //     timer.current = setTimeout(() => nextSlide(), 5000)
+    //     return () => clearTimeout(timer.current)
+    // }, [activeIdx])
 
     const mainCSS = css`
         display: flex;
@@ -57,8 +58,8 @@ const Slider = ({posts}) => {
                 {transitions((style, post) => (
                     <Slide post={post} style={style} />
                 ))}
-                <Arrow direction="left" handleClick={prevSlide}/>
-                <Arrow direction="right" handleClick={nextSlide}/>
+                {/* <Arrow direction="left" handleClick={prevSlide}/>
+                <Arrow direction="right" handleClick={nextSlide}/> */}
             </div>
             <Timeline posts={posts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
             <Related posts={posts} activeIdx={activeIdx}/>

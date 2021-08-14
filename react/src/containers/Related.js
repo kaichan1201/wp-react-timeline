@@ -30,7 +30,8 @@ const Related = ({posts, activeIdx}) => {
             transform: `translate3d(0%, 0, 0)`,
         },
         leave: [{height: 0}, {opacity: 0, innerHeight: 0}],
-        trail: 400
+        trail: 400,
+        delay: 400,
     })
 
     const relatedCSS = css`

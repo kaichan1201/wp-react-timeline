@@ -2,23 +2,9 @@
 import React from 'react'
 import { css } from '@emotion/react'
 
-const TimelineItem = ({isActive, idx, dotWidth, lineWidth, margin, onClick}) => {
-    const DotCSS = css`
-        position: relative;
-        height: ${dotWidth}px;
-        width: ${dotWidth}px;
-        border-radius: 50%;
-        margin-right: ${margin}px;
-        background-color: ${isActive ? '#ecf542':'#37cc5c'};
-        opacity: 0.6;
-        display: inline-block;
-        &:hover{
-            cursor: pointer;
-            opacity: 0.9;
-        }
-    `
-    const Dot = () => <div css={DotCSS} onClick={onClick}/>
+import Dot from './Dot'
 
+const TimelineItem = ({isActive, idx, post, dotWidth, lineWidth, margin, onClick}) => {
     const LineCSS = css`
             position: relative;
             width: ${lineWidth}px;
@@ -32,10 +18,10 @@ const TimelineItem = ({isActive, idx, dotWidth, lineWidth, margin, onClick}) => 
 
     return (
         <div>{
-            idx === 0 ? <Dot /> : (
+            idx === 0 ? <Dot dotWidth={dotWidth} margin={margin} isActive={isActive} onClick={onClick} post={post}/> : (
                 <>
                     <Line />
-                    <Dot />
+                    <Dot dotWidth={dotWidth} margin={margin} isActive={isActive} onClick={onClick} post={post}/>
                 </>
             )
         }</div>
