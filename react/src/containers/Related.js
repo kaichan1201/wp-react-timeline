@@ -1,48 +1,67 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react'
-import { useTransition } from 'react-spring'
+import { animated, useSpring, useTransition } from 'react-spring'
 import { css } from '@emotion/react'
 
 import RelatedItem from '../components/RelatedItem'
 
-const Related = ({posts, activeIdx}) => {
-    const [relatedPosts, setRelatedPosts] = useState([])
+const intersectNums = (A, B) => A.filter(a => B.includes(a)).length
 
-    const intersectNums = (A, B) => A.filter(a => B.includes(a)).length
+const Related = ({allPosts, posts, activeIdx}) => {
+    const [relatedPosts, setRelatedPosts] = useState([])
+    const [showRelated, setShowRelated] = useState(false)
+
     useEffect(() => { // find related posts and sort them based on revelancy
-        let pairs = posts.map(p => [intersectNums(p.tags, posts[activeIdx].tags), p])
-        pairs = pairs.filter(p => p[0] > 0 && p[1] !== posts[activeIdx])
-        pairs.sort((a, b) => b[0] - a[0])
-        setRelatedPosts(pairs.map(p => p[1]))
-    }, [activeIdx, posts])
+        setShowRelated(false)
+
+        setTimeout(() => {
+            let pairs = allPosts.map(p => [intersectNums(p.tags, posts[activeIdx].tags), p])
+            pairs = pairs.filter(p => p[0] > 0 && p[1] !== posts[activeIdx])
+            pairs.sort((a, b) => b[0] - a[0])
+
+            setRelatedPosts(pairs.map(p => p[1]))
+        }, 1000)
+    }, [activeIdx, allPosts, posts])
 
     const transitions = useTransition(relatedPosts, {
         from: {
             opacity: 0,
-            height: 0,
+            height: 50,
             innerHeight: 0,
             transform: `translate3d(-10%, 0, 0)`,
         },
         enter: {
             opacity: 1,
-            height: 50,
+            height: 100,
             innerHeight: 50,
             transform: `translate3d(0%, 0, 0)`,
         },
-        leave: [{height: 0}, {opacity: 0, innerHeight: 0}],
+        leave: [{height: 50, opacity: 0, innerHeight: 0}],
         trail: 400,
         delay: 400,
     })
 
+    const relatedSpring = useSpring({
+        opacity: showRelated ? 1:0,
+        from: {opacity: 0}
+    })
+    useEffect(() => {
+        setShowRelated(true)
+    }, [relatedPosts])
+
     const relatedCSS = css`
         width: 50%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     `
     return (
-        <div css={relatedCSS}>
-            {transitions((style, rp, _, index) => (
+        <animated.div style={relatedSpring} css={relatedCSS}>
+            {relatedPosts.map(rp => <RelatedItem key={rp} post={rp} />)}
+            {/* {transitions((style, rp, _, index) => (
                 <RelatedItem key={index} style={style} post={rp} />
-            ))}
-        </div>
+            ))} */}
+        </animated.div>
     )
 }
 

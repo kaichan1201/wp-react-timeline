@@ -3,18 +3,36 @@ import React from 'react'
 import { css } from '@emotion/react'
 import { animated } from 'react-spring'
 
-const realtedItemCSS = css`
-    background-color: rgba(248, 161, 11, 0.64);
-    height: 10%;
-    margin-top: 1%;
-    display: flex;
-    flex-direction: row;
-`
-
-const RelatedItem = ({style, post}) => {
+const RelatedItem = ({post}) => {
+    const realtedItemCSS = css`
+        background-image: linear-gradient(
+            rgba(0,0,0,0.50),
+            rgba(0,0,0,0.50)
+        ),
+        url(${post.jetpack_featured_media_url});
+        background-size: cover;
+        margin-top: 5%;
+        color: white;
+        height: 100px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    `
+    const textCSS = css`
+        color: white;
+        outline: none;
+        text-decoration: none;
+        &:visited{
+            color:white;
+        }
+        &:hover{
+            border-bottom: 1px solid white;
+        }
+    `
     return (
-        <animated.div css={realtedItemCSS} style={style}>
-            <p>{post.title.rendered}</p>
+        <animated.div css={realtedItemCSS}>
+            <a href={post.link} css={textCSS}>{post.title.rendered}</a>
         </animated.div>
     )
 }

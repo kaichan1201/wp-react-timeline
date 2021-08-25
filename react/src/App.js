@@ -11,7 +11,8 @@ function App() {
     // axios.get('http://localhost:8000/wp-json/wp/v2/posts')
     axios.get('https://covidstory.tw/wp-json/wp/v2/posts')
         .then(msg => {
-            msg = msg.data.filter(d => d.acf.add_to_timeline)
+            // msg = msg.data.filter(d => d.acf.add_to_timeline)
+            msg = msg.data
             msg.sort((a, b) => (new Date(a.acf.event_date) - new Date(b.acf.event_date)))
             setPosts(msg)
             setLoaded(true)
@@ -20,7 +21,7 @@ function App() {
 
   return (
     <>
-    {!loaded ? <p>loading...</p> : <Slider posts={posts}/>}
+    {!loaded ? <p>loading...</p> : <Slider allPosts={posts}/>}
     </>
   );
 }

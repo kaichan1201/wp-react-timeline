@@ -3,12 +3,12 @@ import React, { useState, useEffect, useRef } from 'react'
 import { css } from '@emotion/react'
 import {useTransition } from 'react-spring'
 
-import Arrow from '../components/Arrow'
 import Slide from '../components/Slide'
 import Related from './Related'
 import Timeline from './Timeline'
 
-const Slider = ({posts}) => {
+const Slider = ({allPosts}) => {
+    const posts = allPosts.filter(d => d.acf.add_to_timeline)
     const [[activeIdx, dir], setActiveState] = useState([0, -1])
     const transitions = useTransition(posts[activeIdx], {
         from: {
@@ -39,7 +39,7 @@ const Slider = ({posts}) => {
     //     clearTimeout(timer.current)
     //     timer.current = setTimeout(() => nextSlide(), 5000)
     //     return () => clearTimeout(timer.current)
-    // }, [activeIdx])
+    // }, [activeIdx, nextSlide])
 
     const mainCSS = css`
         display: flex;
@@ -62,7 +62,7 @@ const Slider = ({posts}) => {
                 <Arrow direction="right" handleClick={nextSlide}/> */}
             </div>
             <Timeline posts={posts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
-            <Related posts={posts} activeIdx={activeIdx}/>
+            <Related allPosts={allPosts} posts={posts} activeIdx={activeIdx}/>
         </div>
     )
 }
