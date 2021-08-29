@@ -6,24 +6,26 @@ import { animated, useSpring } from 'react-spring'
 import TimelineItem from '../components/TimelineItem'
 import Arrow from '../components/Arrow'
 
-const dotWidth = 30
-const lineWidth = 70
+const dotWidth = 25
+const lineWidth = 50
 const margin = 5
+const offset = 9
 
 const Timeline = ({posts, activeIdx, switchToSlide}) => {
     const [scrollIdx, setScrollIdx] = useState(0)
     const TimelineBoxCSS = css`
         position: relative;
-        width: 50%;
-        height: 30%;
+        width: 70%;
+        height: 10vh;
         margin-top: 1vh;
         margin-bottom: 1vh;
     `
     const TimelineContentCSS = css`
         display: flex;
-        width: 70%;
+        width: 80%;
         height: 100%;
-        margin-left: 15%;
+        padding-top: 2.5vh;
+        margin-left: 10%;
         white-space: nowrap;
         overflow-x: hidden;
     `
@@ -32,7 +34,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
         config: {duration: 500}
     })
     const arrowHandleClick = (dir) => () => {
-        setScrollIdx(dir === 1 ? Math.min(scrollIdx+5, posts.length-1) : Math.max(scrollIdx-5, 0))
+        setScrollIdx(dir === 1 ? Math.min(scrollIdx+offset, posts.length-1) : Math.max(scrollIdx-offset, 0))
     }
     return (
         <div css={TimelineBoxCSS}>

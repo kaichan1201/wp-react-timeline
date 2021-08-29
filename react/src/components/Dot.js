@@ -21,12 +21,10 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
         width: ${dotWidth}px;
         border-radius: 50%;
         margin-right: ${margin}px;
-        background-color: ${isActive ? '#ecf542':'#37cc5c'};
-        opacity: 0.6;
+        background-color: ${isActive ? '#86BED5':'#3E97BD'};
         display: inline-block;
         &:hover{
             cursor: pointer;
-            opacity: 0.9;
         }
     `
 
@@ -34,10 +32,12 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
         position: absolute;
         margin: auto;
         font-size: 10px;
+        left: -1.3vw;
+        top: 4.5vh;
     `
 
     const TooltipCSS = css`
-        background-color: blue;
+        background-color: #107790;
         opacity: 0.9;
         color: white;
     `
@@ -45,7 +45,7 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
     return (
         <>
             <div css={DotCSS} ref={setTriggerRef} onClick={onClick}>
-                <p css={DotTextCSS}>{post.acf.event_date.slice(0, -3)}</p>
+                <p css={DotTextCSS}>{post.acf.event_date}</p>
             </div>
             {
                 visible && (

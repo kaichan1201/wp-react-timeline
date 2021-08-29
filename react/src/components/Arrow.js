@@ -10,7 +10,7 @@ const Arrow = ({direction, handleClick}) => {
             css={css`
                 display: flex;
                 position: absolute;
-                top: 0%;
+                top: 1vh;
                 ${direction === 'right' ? `right: 1vw` : `left: 1vw`};
                 height: 50px;
                 width: 50px;
@@ -24,7 +24,7 @@ const Arrow = ({direction, handleClick}) => {
                 }
             `}
         >
-            {direction === 'right' ? <IoIosArrowForward size={42}/> : <IoIosArrowBack size={42}/>}
+            {direction === 'right' ? <IoIosArrowForward size={42} color={'#086067'}/> : <IoIosArrowBack size={42} color={'#086067'}/>}
         </div>
     )
 }

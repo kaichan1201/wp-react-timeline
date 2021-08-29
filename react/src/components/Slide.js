@@ -5,8 +5,8 @@ import { animated } from '@react-spring/web'
 
 const textWrapCSS = css`
     height: 100%;
-    margin-left: 2vw;
-    margin-right: 2vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
     color: white;
 `
 
@@ -16,6 +16,7 @@ const wordContentCSS = css`
     height: 60%;
     overflow: hidden;
     text-align: justify;
+    font-size: 20px;
 `
 
 const Slide = ({post, style}) => {
@@ -27,8 +28,9 @@ const Slide = ({post, style}) => {
             rgba(0,0,0,0.50),
             rgba(0,0,0,0.50)
         ),
-        url(${post.jetpack_featured_media_url});
+        url(${post.jetpack_featured_media_url ? post.jetpack_featured_media_url: 'https://covidstory.tw/wp-content/uploads/2021/04/Slide24.jpeg'});
         background-size: cover;
+        background-position: center;
     `
     const TitleCSS = css`
         font-size: 2em;

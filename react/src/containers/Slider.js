@@ -48,8 +48,8 @@ const Slider = ({allPosts}) => {
     `
     const SliderCSS = css`
         position: relative;
-        height: 70vh;
-        width: 50vw;
+        height: 85vh;
+        width: 100vw;
     `
 
     return (

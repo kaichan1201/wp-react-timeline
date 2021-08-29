@@ -10,7 +10,7 @@ const TimelineItem = ({isActive, idx, post, dotWidth, lineWidth, margin, onClick
             width: ${lineWidth}px;
             margin-right: ${margin}px;
             bottom: 10px;
-            border-top: 4px solid #37cc5c;
+            border-top: 4px solid #0E7EAD;
             opacity: 0.8;
             display: inline-block;
         `
