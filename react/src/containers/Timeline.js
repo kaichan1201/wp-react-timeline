@@ -12,10 +12,17 @@ const margin = 5
 const offset = 9
 
 const Timeline = ({posts, activeIdx, switchToSlide}) => {
+    const MainBoxCSS = css`
+        position: relative;
+        width: 100%;
+        height: 12vh;
+        display: flex;
+        flex-direction: row;
+    `
     const MonthBoxCSS = css`
         position: relative;
         width: 20%;
-        height: 7vh;
+        height: 100%;
         margin-top: 1vh;
         margin-bottom: 1vh;
         display: flex;
@@ -32,8 +39,8 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
     `
     const TimelineBoxCSS = css`
         position: relative;
-        width: 70%;
-        height: 10vh;
+        width: 50%;
+        height: 100%;
         margin-top: 1vh;
         margin-bottom: 1vh;
     `
@@ -83,7 +90,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
     }
 
     return (
-        <>
+        <div css={MainBoxCSS}>
             <div css={MonthBoxCSS}>
                 <div css={MonthContentCSS}>{months[monthIdx]}</div>
                 <Arrow direction="left" handleClick={lastMonth}/>
@@ -101,7 +108,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
                 <Arrow direction="left" handleClick={arrowHandleClick(-1)}/>
                 <Arrow direction="right" handleClick={arrowHandleClick(1)}/>
             </div>
-        </>
+        </div>
     )
 }
 
