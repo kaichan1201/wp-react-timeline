@@ -26,12 +26,12 @@ const Slider = ({allPosts}) => {
         config: {friction: 17}
     })
 
-    const nextSlide = () => {
-        setActiveState([(activeIdx + 1) % posts.length, -1])
-    }
-    const prevSlide = () => {
-        setActiveState([ (activeIdx - 1 + posts.length) % posts.length, 1])    
-    }
+    // const nextSlide = () => {
+    //     setActiveState([(activeIdx + 1) % posts.length, -1])
+    // }
+    // const prevSlide = () => {
+    //     setActiveState([ (activeIdx - 1 + posts.length) % posts.length, 1])    
+    // }
     const switchToSlide = (idx) => () => setActiveState([idx, idx > activeIdx ? -1 : 1])
 
     // const timer = useRef(null)
@@ -54,6 +54,7 @@ const Slider = ({allPosts}) => {
 
     return (
         <div css={mainCSS}>
+            <Timeline posts={posts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
             <div css={SliderCSS}>
                 {transitions((style, post) => (
                     <Slide post={post} style={style} />
@@ -61,7 +62,6 @@ const Slider = ({allPosts}) => {
                 {/* <Arrow direction="left" handleClick={prevSlide}/>
                 <Arrow direction="right" handleClick={nextSlide}/> */}
             </div>
-            <Timeline posts={posts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
             <Related allPosts={allPosts} posts={posts} activeIdx={activeIdx}/>
         </div>
     )

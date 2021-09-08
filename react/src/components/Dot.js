@@ -12,7 +12,7 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
         setTriggerRef,
         visible,
       } = usePopperTooltip({
-          placement: 'top',
+          placement: 'bottom',
       });
     
     const DotCSS = css`
@@ -31,8 +31,8 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
     const DotTextCSS = css`
         position: absolute;
         margin: auto;
-        font-size: 10px;
-        left: -1.3vw;
+        font-size: 15px;
+        left: -0.5vw;
         top: 4.5vh;
     `
 
@@ -45,7 +45,7 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
     return (
         <>
             <div css={DotCSS} ref={setTriggerRef} onClick={onClick}>
-                <p css={DotTextCSS}>{post.acf.event_date}</p>
+                <p css={DotTextCSS}>{post.acf.event_date.slice(5)}</p>
             </div>
             {
                 visible && (
