@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { css } from '@emotion/react'
 import { animated, useSpring } from 'react-spring'
 
@@ -14,14 +14,14 @@ const offset = 9
 const Timeline = ({posts, activeIdx, switchToSlide}) => {
     const MainBoxCSS = css`
         position: relative;
-        width: 100%;
-        height: 12vh;
+        width: 85%;
+        height: 100%;
         display: flex;
         flex-direction: row;
     `
     const MonthBoxCSS = css`
         position: relative;
-        width: 20%;
+        width: 30%;
         height: 100%;
         margin-top: 1vh;
         margin-bottom: 1vh;
@@ -39,7 +39,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
     `
     const TimelineBoxCSS = css`
         position: relative;
-        width: 50%;
+        width: 70%;
         height: 100%;
         margin-top: 1vh;
         margin-bottom: 1vh;
@@ -63,7 +63,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
         setScrollIdx(dir === 1 ? Math.min(scrollIdx+offset, posts.length-1) : Math.max(scrollIdx-offset, 0))
     }
 
-    let months = [...new Set(posts.map(p => p.acf.event_date.slice(0, -3)))]
+    let months = useMemo(() => ([...new Set(posts.map(p => p.acf.event_date.slice(0, -3)))]), [posts])
     let monthFirstIdxs = []
     let idx = 0
     for (let i=0; i<posts.length;i++){
@@ -74,9 +74,11 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
     }
     // change active month and scroll position whenever active post change
     useEffect(() => {
-        setMonthIdx(months.indexOf(posts[activeIdx].acf.event_date.slice(0, -3)))
-        setScrollIdx(activeIdx)
-    }, [activeIdx, posts])
+        if (posts.length > 0) {
+            setMonthIdx(months.indexOf(posts[activeIdx].acf.event_date.slice(0, -3)))
+            setScrollIdx(activeIdx)
+        }
+    }, [activeIdx, posts, months])
     // change active post to the first post of the active month
     const nextMonth = () => {
         let newMonthIdx = Math.min(monthIdx + 1, months.length - 1)

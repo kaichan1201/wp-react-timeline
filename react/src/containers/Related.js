@@ -4,23 +4,24 @@ import { animated, useSpring, useTransition } from 'react-spring'
 import { css } from '@emotion/react'
 
 import RelatedItem from '../components/RelatedItem'
-
-const intersectNums = (A, B) => A.filter(a => B.includes(a)).length
+import { intersectNums } from '../utils'
 
 const Related = ({allPosts, posts, activeIdx}) => {
     const [relatedPosts, setRelatedPosts] = useState([])
     const [showRelated, setShowRelated] = useState(false)
 
     useEffect(() => { // find related posts and sort them based on revelancy
-        setShowRelated(false)
+        if (posts.length > 0) {
+            setShowRelated(false)
 
-        setTimeout(() => {
-            let pairs = allPosts.map(p => [intersectNums(p.tags, posts[activeIdx].tags), p])
-            pairs = pairs.filter(p => p[0] > 0 && p[1] !== posts[activeIdx])
-            pairs.sort((a, b) => b[0] - a[0])
+            setTimeout(() => {
+                let pairs = allPosts.map(p => [intersectNums(p.tags, posts[activeIdx].tags), p])
+                pairs = pairs.filter(p => p[0] > 0 && p[1] !== posts[activeIdx])
+                pairs.sort((a, b) => b[0] - a[0])
 
-            setRelatedPosts(pairs.map(p => p[1]))
-        }, 1000)
+                setRelatedPosts(pairs.map(p => p[1]))
+            }, 1000)
+        }
     }, [activeIdx, allPosts, posts])
 
     const transitions = useTransition(relatedPosts, {

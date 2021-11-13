@@ -16,6 +16,8 @@
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.4",
     "rewire": "^5.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.4",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

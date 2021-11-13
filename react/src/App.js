@@ -6,6 +6,7 @@ import Slider from './containers/Slider';
 function App() {
   const [loaded, setLoaded] = useState(false)
   const [posts, setPosts] = useState([])
+  const [allTags, setAllTags] = useState([])
 
   useEffect(() => {
     // axios.get('http://localhost:8000/wp-json/wp/v2/posts')
@@ -17,11 +18,26 @@ function App() {
             setPosts(msg)
             setLoaded(true)
         }).catch(err => {console.log(err)})
+
+    axios.get('https://covidstory.tw/wp-json/wp/v2/tags')
+        .then(msg => {
+            msg = msg.data
+            const newAllTags = []
+            msg.forEach(d => {
+              if (d.count > 0) {
+                newAllTags.push({
+                  "id": d.id,
+                  // "count": d.count,
+                  "name": d.name
+                })}
+            })
+            setAllTags(newAllTags)
+        }).catch(err => {console.log(err)})
   }, [])
 
   return (
     <>
-    {!loaded ? <p>loading...</p> : <Slider allPosts={posts}/>}
+    {!loaded ? <p>loading...</p> : <Slider allPosts={posts} allTags={allTags}/>}
     </>
   );
 }
