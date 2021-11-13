@@ -22,3 +22,7 @@ function mytimeline_load_assets() {
 }
  
 add_action( 'wp_enqueue_scripts', 'mytimeline_load_assets' );
+
+/**
+ * Plugin Name: My Timeline
+ */
