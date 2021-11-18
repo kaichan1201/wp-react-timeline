@@ -6,7 +6,7 @@ import Slider from './containers/Slider';
 function App() {
   const [loaded, setLoaded] = useState(false)
   const [posts, setPosts] = useState([])
-  const [allTags, setAllTags] = useState([])
+  const [allCats, setAllCats] = useState([])
 
   useEffect(() => {
     // axios.get('http://localhost:8000/wp-json/wp/v2/posts')
@@ -19,25 +19,24 @@ function App() {
             setLoaded(true)
         }).catch(err => {console.log(err)})
 
-    axios.get('https://covidstory.tw/wp-json/wp/v2/tags')
+    axios.get('https://covidstory.tw/wp-json/wp/v2/categories/?per_page=100')
         .then(msg => {
             msg = msg.data
-            const newAllTags = []
+            const newAllCats = []
             msg.forEach(d => {
-                newAllTags.push({
+                newAllCats.push({
                   "id": d.id,
-                  // "count": d.count,
                   "name": d.name
                 })
             })
-            console.log(newAllTags)
-            setAllTags(newAllTags)
+            console.log(newAllCats)
+            setAllCats(newAllCats)
         }).catch(err => {console.log(err)})
   }, [])
 
   return (
     <>
-    {!loaded ? <p>loading...</p> : <Slider allPosts={posts} allTags={allTags}/>}
+    {!loaded ? <p>loading...</p> : <Slider allPosts={posts} allCats={allCats}/>}
     </>
   );
 }

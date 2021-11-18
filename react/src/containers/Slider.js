@@ -9,10 +9,10 @@ import Timeline from './Timeline'
 import { intersectNums } from '../utils'
 import CatDropdown from '../components/CatDropdown'
 
-const Slider = ({allPosts, allTags}) => {
+const Slider = ({allPosts, allCats}) => {
     // const posts = allPosts.filter(d => d.acf.add_to_timeline)
     const [posts, setPosts] = useState([])
-    const [postTags, setPostTags] = useState([])
+    const [timelineCats, setTimelineCats] = useState([])
     const [cats, setCats] = useState([])
     const [[activeIdx, dir], setActiveState] = useState([0, -1])
     const transitions = useTransition(posts[activeIdx], {
@@ -38,25 +38,19 @@ const Slider = ({allPosts, allTags}) => {
         if (cats.length === 0) {
             let newPosts = allPosts.filter(d => d.acf.add_to_timeline)
             setPosts(newPosts)
-            let newPostTagIdxs = new Set()
+            let newTimelineCatsIdxs = new Set()
             newPosts.forEach(p => {
-                p.tags.forEach(tagIdx => newPostTagIdxs.add(tagIdx))
+                p.categories.forEach(tagIdx => newTimelineCatsIdxs.add(tagIdx))
             })
-            let newPostTags = Array.from(newPostTagIdxs).map(tagIdx => allTags.filter(tag => tag.id === tagIdx)[0])
-            setPostTags(newPostTags.filter(tag => tag !== undefined))
+            
+            let newTimelineCats = Array.from(newTimelineCatsIdxs).map(tagIdx => allCats.filter(tag => tag.id === tagIdx)[0])
+            setTimelineCats(newTimelineCats)
         }
         else {
             setPosts(allPosts.filter(d => d.acf.add_to_timeline && 
-                intersectNums(d.tags, cats) > 0))
+                intersectNums(d.categories, cats) > 0))
             }
-    }, [allPosts, cats, allTags])
-
-    // const nextSlide = () => {
-    //     setActiveState([(activeIdx + 1) % posts.length, -1])
-    // }
-    // const prevSlide = () => {
-    //     setActiveState([ (activeIdx - 1 + posts.length) % posts.length, 1])    
-    // }
+    }, [allPosts, cats, allCats])
 
     // const timer = useRef(null)
     // useEffect(() => {
@@ -86,7 +80,7 @@ const Slider = ({allPosts, allTags}) => {
         <div css={mainCSS}>
             <div css={TopBarCSS}>
                 <Timeline posts={posts} setCats={setCats} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
-                <CatDropdown setCats={setCats} tags={postTags}/>
+                <CatDropdown setCats={setCats} timelineCats={timelineCats}/>
             </div>
 
             <div css={SliderCSS}>
