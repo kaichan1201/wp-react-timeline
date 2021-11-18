@@ -52,12 +52,12 @@ const Slider = ({allPosts, allCats}) => {
             }
     }, [allPosts, cats, allCats])
 
-    // const timer = useRef(null)
-    // useEffect(() => {
-    //     clearTimeout(timer.current)
-    //     timer.current = setTimeout(() => nextSlide(), 5000)
-    //     return () => clearTimeout(timer.current)
-    // }, [activeIdx, nextSlide])
+    const timer = useRef(null)
+    useEffect(() => {
+        clearTimeout(timer.current)
+        timer.current = setTimeout(switchToSlide((activeIdx + 1) % posts.length), 5000)
+        return () => clearTimeout(timer.current)
+    }, [activeIdx, posts])
 
     const mainCSS = css`
         display: flex;
