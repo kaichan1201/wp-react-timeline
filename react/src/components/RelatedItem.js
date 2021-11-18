@@ -9,11 +9,11 @@ const RelatedItem = ({post}) => {
             rgba(0,0,0,0.50),
             rgba(0,0,0,0.50)
         ),
-        url(${post.jetpack_featured_media_url});
+        url(${post.jetpack_featured_media_url ? post.jetpack_featured_media_url: 'https://covidstory.tw/wp-content/uploads/2021/04/Slide24.jpeg'});
         background-size: cover;
         margin-top: 5%;
         color: white;
-        height: 100px;
+        height: 80%;
         text-align: center;
         display: flex;
         justify-content: center;

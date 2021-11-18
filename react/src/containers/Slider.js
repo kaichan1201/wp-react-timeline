@@ -12,6 +12,7 @@ import CatDropdown from '../components/CatDropdown'
 const Slider = ({allPosts, allTags}) => {
     // const posts = allPosts.filter(d => d.acf.add_to_timeline)
     const [posts, setPosts] = useState([])
+    const [postTags, setPostTags] = useState([])
     const [cats, setCats] = useState([])
     const [[activeIdx, dir], setActiveState] = useState([0, -1])
     const transitions = useTransition(posts[activeIdx], {
@@ -35,13 +36,20 @@ const Slider = ({allPosts, allTags}) => {
     useEffect(() => {
         switchToSlide(0)()
         if (cats.length === 0) {
-            setPosts(allPosts.filter(d => d.acf.add_to_timeline))
+            let newPosts = allPosts.filter(d => d.acf.add_to_timeline)
+            setPosts(newPosts)
+            let newPostTagIdxs = new Set()
+            newPosts.forEach(p => {
+                p.tags.forEach(tagIdx => newPostTagIdxs.add(tagIdx))
+            })
+            let newPostTags = Array.from(newPostTagIdxs).map(tagIdx => allTags.filter(tag => tag.id === tagIdx)[0])
+            setPostTags(newPostTags.filter(tag => tag !== undefined))
         }
         else {
             setPosts(allPosts.filter(d => d.acf.add_to_timeline && 
                 intersectNums(d.tags, cats) > 0))
             }
-    }, [allPosts, cats])
+    }, [allPosts, cats, allTags])
 
     // const nextSlide = () => {
     //     setActiveState([(activeIdx + 1) % posts.length, -1])
@@ -78,7 +86,7 @@ const Slider = ({allPosts, allTags}) => {
         <div css={mainCSS}>
             <div css={TopBarCSS}>
                 <Timeline posts={posts} setCats={setCats} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
-                <CatDropdown setCats={setCats} allTags={allTags}/>
+                <CatDropdown setCats={setCats} tags={postTags}/>
             </div>
 
             <div css={SliderCSS}>
@@ -87,8 +95,8 @@ const Slider = ({allPosts, allTags}) => {
                 ))}
                 {/* <Arrow direction="left" handleClick={prevSlide}/>
                 <Arrow direction="right" handleClick={nextSlide}/> */}
+                <Related allPosts={allPosts} posts={posts} activeIdx={activeIdx}/>
             </div>
-            <Related allPosts={allPosts} posts={posts} activeIdx={activeIdx}/>
         </div>
     )
 }

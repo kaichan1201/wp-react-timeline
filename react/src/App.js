@@ -24,13 +24,13 @@ function App() {
             msg = msg.data
             const newAllTags = []
             msg.forEach(d => {
-              if (d.count > 0) {
                 newAllTags.push({
                   "id": d.id,
                   // "count": d.count,
                   "name": d.name
-                })}
+                })
             })
+            console.log(newAllTags)
             setAllTags(newAllTags)
         }).catch(err => {console.log(err)})
   }, [])

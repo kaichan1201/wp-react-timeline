@@ -51,10 +51,17 @@ const Related = ({allPosts, posts, activeIdx}) => {
     }, [relatedPosts])
 
     const relatedCSS = css`
-        width: 50%;
+        position: absolute;
+        background-color: rgba(255,255,255,0.50);
+        width: 100%;
+        top: 75%;
+        padding-left: 2%;
+        padding-right: 2%;
+        height: 25%;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 10px;
+        z-index: 1;
     `
     return (
         <animated.div style={relatedSpring} css={relatedCSS}>

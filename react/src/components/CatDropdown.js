@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown, Button } from 'semantic-ui-react';
 
-const CatDropdown = ({setCats, allTags}) => {
+const CatDropdown = ({setCats, tags}) => {
     const [options, setOptions] = useState([])
     useEffect(() => {
         const newOptions = []
-        allTags.forEach(tag => {
+        tags.forEach(tag => {
             newOptions.push({
                 key: tag.id,
                 text: tag.name,
@@ -13,7 +13,7 @@ const CatDropdown = ({setCats, allTags}) => {
             })
         })
         setOptions(newOptions)
-    }, [allTags])
+    }, [tags])
     return (
         <Button basic color='teal' size="small">
             <Dropdown
