@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     // axios.get('http://localhost:8000/wp-json/wp/v2/posts')
-    axios.get('https://covidstory.tw/wp-json/wp/v2/posts')
+    axios.get('https://covidstory.tw/wp-json/wp/v2/posts/?per_page=100')
         .then(msg => {
             // msg = msg.data.filter(d => d.acf.add_to_timeline)
             msg = msg.data

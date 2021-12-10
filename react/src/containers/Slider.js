@@ -55,7 +55,7 @@ const Slider = ({allPosts, allCats}) => {
     const timer = useRef(null)
     useEffect(() => {
         clearTimeout(timer.current)
-        timer.current = setTimeout(switchToSlide((activeIdx + 1) % posts.length), 5000)
+        timer.current = setTimeout(switchToSlide((activeIdx + 1) % posts.length), 50000)
         return () => clearTimeout(timer.current)
     }, [activeIdx, posts])
 
