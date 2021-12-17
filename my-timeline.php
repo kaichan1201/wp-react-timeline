@@ -5,7 +5,7 @@
  
 function mytimeline_shortcode() {
  
- return '<div id="my-timeline-react" ></div>';
+ return '<div id="root" ></div>';
 }
  
 add_shortcode('my-timeline-react', 'mytimeline_shortcode');

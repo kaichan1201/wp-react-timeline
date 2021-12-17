@@ -5,7 +5,8 @@
     "main.js.map": "/static/js/all_in_one_file.js.map",
     "index.html": "/index.html",
     "static/css/all_in_one_file.css.map": "/static/css/all_in_one_file.css.map",
-    "static/js/all_in_one_file.js.LICENSE.txt": "/static/js/all_in_one_file.js.LICENSE.txt"
+    "static/js/all_in_one_file.js.LICENSE.txt": "/static/js/all_in_one_file.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/static/media/outline-icons.ddae9b1b.woff"
   },
   "entrypoints": [
     "static/css/all_in_one_file.css",
