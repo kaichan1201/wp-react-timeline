@@ -7,18 +7,22 @@ const textWrapCSS = css`
     height: 100%;
     margin-left: 5vw;
     margin-right: 5vw;
+    margin-top: 5vw;
     color: white;
 `
 
 const wordContentCSS = css`
     margin-left: 5vw;
     margin-right: 5vw;
-    height: 60%;
-    overflow: hidden;
+    height: 30%;
     text-align: justify;
     font-size: 20px;
+    margin-top: 20px;
+    overflow: scroll;
 `
-
+const dateCSS = css`
+    font-size: 3em;
+    `
 const Slide = ({post, style}) => {
     const SlideCSS = css`
         position: absolute;
@@ -33,7 +37,8 @@ const Slide = ({post, style}) => {
         background-position: center;
     `
     const TitleCSS = css`
-        font-size: 2em;
+        font-size: 4.5em;
+        line-height: 10vw;
         font-weight: bold;
         color: white;
         outline: none;
@@ -48,7 +53,7 @@ const Slide = ({post, style}) => {
     return (
         <animated.div css={SlideCSS} style={style}>
             <div css={textWrapCSS}>
-                    <p>{post.acf.event_date}</p>
+                    <p css={dateCSS}>{post.acf.event_date}</p>
                     <a href={post.link} css={TitleCSS}>
                         {post.title.rendered}
                     </a>

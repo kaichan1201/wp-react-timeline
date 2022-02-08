@@ -30,12 +30,22 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
         justify-content: center;
     `
     const MonthContentCSS = css`
-        position: relative;
-        width: 30%;
-        height: 100%;
-        top: 20%;
-        font-size: 20px;
-        text-align: center;
+        @media only screen and (min-width: 640px) {
+            position: relative;
+            width: 30%;
+            height: 100%;
+            top: 20%;
+            font-size: 20px;
+            text-align: center;
+        }
+        
+        @media only screen and (max-width: 640px) {
+            position: relative;
+            font-size: 10px;
+            width: 30%;
+            height: 100%;
+            top: 20%;
+          }
     `
     const TimelineBoxCSS = css`
         position: relative;

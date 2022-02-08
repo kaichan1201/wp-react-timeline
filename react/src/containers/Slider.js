@@ -72,7 +72,7 @@ const Slider = ({allPosts, allCats}) => {
     `
     const SliderCSS = css`
         position: relative;
-        height: 88vh;
+        height: 120vh;
         width: 100vw;
     `
 
