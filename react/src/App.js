@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios'
 
 import Slider from './containers/Slider';
-import { getDateFormat } from './utils';
+import { axiosGetAllPages, getDateFormat } from './utils';
 
 function App() {
   const [loaded, setLoaded] = useState(false)
@@ -10,21 +9,17 @@ function App() {
   const [allCats, setAllCats] = useState([])
 
   useEffect(() => {
-    // axios.get('http://localhost:8000/wp-json/wp/v2/posts')
-    axios.get('https://covidstory.tw/wp-json/wp/v2/posts/?per_page=100')
-        .then(msg => {
-            // msg = msg.data.filter(d => d.acf.add_to_timeline)
-            msg = msg.data
-            msg.sort((a, b) => (new Date(getDateFormat(a.acf.event_date)) - new Date(getDateFormat(b.acf.event_date))))
-            setPosts(msg)
+    axiosGetAllPages('https://covidstory.tw/wp-json/wp/v2/posts/')
+        .then(data => {
+            data.sort((a, b) => (new Date(getDateFormat(a.acf.event_date)) - new Date(getDateFormat(b.acf.event_date))))
+            setPosts(data)
             setLoaded(true)
         }).catch(err => {console.log(err)})
 
-    axios.get('https://covidstory.tw/wp-json/wp/v2/categories/?per_page=100')
-        .then(msg => {
-            msg = msg.data
+    axiosGetAllPages('https://covidstory.tw/wp-json/wp/v2/categories/')
+        .then(data => {
             const newAllCats = []
-            msg.forEach(d => {
+            data.forEach(d => {
                 newAllCats.push({
                   "id": d.id,
                   "name": d.name
