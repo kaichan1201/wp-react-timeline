@@ -3,6 +3,14 @@ import axios from 'axios'
 
 import Slider from './containers/Slider';
 
+const getDateFormat = (date) => {
+  if (date === null) {
+    return '1970-01-01'
+  } else {
+    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6)}`
+  }
+}
+
 function App() {
   const [loaded, setLoaded] = useState(false)
   const [posts, setPosts] = useState([])
@@ -14,7 +22,7 @@ function App() {
         .then(msg => {
             // msg = msg.data.filter(d => d.acf.add_to_timeline)
             msg = msg.data
-            msg.sort((a, b) => (new Date(a.acf.event_date) - new Date(b.acf.event_date)))
+            msg.sort((a, b) => (new Date(getDateFormat(a.acf.event_date)) - new Date(getDateFormat(b.acf.event_date))))
             setPosts(msg)
             setLoaded(true)
         }).catch(err => {console.log(err)})
@@ -29,7 +37,6 @@ function App() {
                   "name": d.name
                 })
             })
-            console.log(newAllCats)
             setAllCats(newAllCats)
         }).catch(err => {console.log(err)})
   }, [])

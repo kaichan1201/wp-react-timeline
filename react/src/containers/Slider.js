@@ -10,12 +10,13 @@ import { intersectNums } from '../utils'
 import CatDropdown from '../components/CatDropdown'
 
 const Slider = ({allPosts, allCats}) => {
-    // const posts = allPosts.filter(d => d.acf.add_to_timeline)
-    const [posts, setPosts] = useState([])
-    const [timelineCats, setTimelineCats] = useState([])
-    const [cats, setCats] = useState([])
+    // const timelinePosts = allPosts.filter(d => d.acf.add_to_timeline)
+    const [timelinePosts, setTimelinePosts] = useState([])  // posts in the timeline
+    const [displayPosts, setDisplayPosts] = useState([])  // posts displaying
+    const [timelineCats, setTimelineCats] = useState([])  // cats {id, name} in the timeline
+    const [displayCatIds, setDisplayCatIds] = useState([])  // ids of cats displaying
     const [[activeIdx, dir], setActiveState] = useState([0, -1])
-    const transitions = useTransition(posts[activeIdx], {
+    const transitions = useTransition(displayPosts[activeIdx], {
         from: {
             opacity: 0,
             transform: `translate3d(${dir === -1 ? 50 : -50}%,0,0) scale(0.5)`,
@@ -32,32 +33,42 @@ const Slider = ({allPosts, allCats}) => {
     })
 
     const switchToSlide = (idx) => () => setActiveState([idx, idx > activeIdx ? -1 : 1])
-
+    
+    // idenfity posts and cats recorded in the timeline
+    // set display cats to all cats in the timeline
     useEffect(() => {
+        // set timeline posts
+        let newTimelinePosts = allPosts.filter(d => d.acf.add_to_timeline)
+        setTimelinePosts(newTimelinePosts)
+
+        // identify timeline cats
+        let newTimelineCatIds = new Set()
+        newTimelinePosts.forEach(p => {
+            p.categories.forEach(tagIdx => newTimelineCatIds.add(tagIdx))
+        })
+        newTimelineCatIds = Array.from(newTimelineCatIds)
+        
+        // set timeline & display cats
+        let newTimelineCats = newTimelineCatIds.map(tagIdx => allCats.filter(tag => tag.id === tagIdx)[0])
+        setTimelineCats(newTimelineCats)
+        setDisplayCatIds(newTimelineCatIds)
+    }, [allPosts, allCats])
+
+
+    // set display posts according to display cats
+    useEffect(() => {
+        const shouldDisplayPost = (p) => intersectNums(p.categories, displayCatIds) > 0
+        setDisplayPosts(timelinePosts.filter(p => shouldDisplayPost(p)))
         switchToSlide(0)()
-        if (cats.length === 0) {
-            let newPosts = allPosts.filter(d => d.acf.add_to_timeline)
-            setPosts(newPosts)
-            let newTimelineCatsIdxs = new Set()
-            newPosts.forEach(p => {
-                p.categories.forEach(tagIdx => newTimelineCatsIdxs.add(tagIdx))
-            })
-            
-            let newTimelineCats = Array.from(newTimelineCatsIdxs).map(tagIdx => allCats.filter(tag => tag.id === tagIdx)[0])
-            setTimelineCats(newTimelineCats)
-        }
-        else {
-            setPosts(allPosts.filter(d => d.acf.add_to_timeline && 
-                intersectNums(d.categories, cats) > 0))
-            }
-    }, [allPosts, cats, allCats])
+    }, [timelinePosts, displayCatIds])
+    
 
     const timer = useRef(null)
     useEffect(() => {
         clearTimeout(timer.current)
-        timer.current = setTimeout(switchToSlide((activeIdx + 1) % posts.length), 50000)
+        timer.current = setTimeout(switchToSlide((activeIdx + 1) % displayPosts.length), 50000)
         return () => clearTimeout(timer.current)
-    }, [activeIdx, posts])
+    }, [activeIdx, displayPosts])
 
     const mainCSS = css`
         display: flex;
@@ -79,8 +90,8 @@ const Slider = ({allPosts, allCats}) => {
     return (
         <div css={mainCSS}>
             <div css={TopBarCSS}>
-                <Timeline posts={posts} setCats={setCats} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
-                <CatDropdown setCats={setCats} timelineCats={timelineCats}/>
+                <Timeline displayPosts={displayPosts} activeIdx={activeIdx} switchToSlide={switchToSlide}/>
+                <CatDropdown setDisplayCatIds={setDisplayCatIds} timelineCats={timelineCats}/>
             </div>
 
             <div css={SliderCSS}>
@@ -89,7 +100,7 @@ const Slider = ({allPosts, allCats}) => {
                 ))}
                 {/* <Arrow direction="left" handleClick={prevSlide}/>
                 <Arrow direction="right" handleClick={nextSlide}/> */}
-                <Related allPosts={allPosts} posts={posts} activeIdx={activeIdx}/>
+                <Related allPosts={allPosts} displayPosts={displayPosts} activeIdx={activeIdx}/>
             </div>
         </div>
     )

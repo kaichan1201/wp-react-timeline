@@ -17,8 +17,8 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
           placement: 'bottom',
       });
 
-    const month = parseInt(post.acf.event_date.split('/')[1])
-    
+    const month = parseInt(post.acf.event_date.slice(4, 6))
+
     const DotCSS = css`
         position: relative;
         height: ${dotWidth}px;
@@ -49,7 +49,7 @@ const Dot = ({dotWidth, margin, isActive, onClick, post}) => {
     return (
         <>
             <div css={DotCSS} ref={setTriggerRef} onClick={onClick}>
-                <p css={DotTextCSS}>{post.acf.event_date.slice(5)}</p>
+                <p css={DotTextCSS}>{`${post.acf.event_date.slice(4, 6)}/${post.acf.event_date.slice(6)}`}</p>
             </div>
             {
                 visible && (

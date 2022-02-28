@@ -11,7 +11,9 @@ const lineWidth = 50
 const margin = 5
 const offset = 9
 
-const Timeline = ({posts, activeIdx, switchToSlide}) => {
+const getYearMonth = p => `${p.acf.event_date.slice(0, 4)}/${p.acf.event_date.slice(4, 6)}`
+
+const Timeline = ({displayPosts, activeIdx, switchToSlide}) => {
     const MainBoxCSS = css`
         position: relative;
         width: 85%;
@@ -70,25 +72,27 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
         config: {duration: 500}
     })
     const arrowHandleClick = (dir) => () => {
-        setScrollIdx(dir === 1 ? Math.min(scrollIdx+offset, posts.length-1) : Math.max(scrollIdx-offset, 0))
+        setScrollIdx(dir === 1 ? Math.min(scrollIdx+offset, displayPosts.length-1) : Math.max(scrollIdx-offset, 0))
     }
 
-    let months = useMemo(() => ([...new Set(posts.map(p => p.acf.event_date.slice(0, -3)))]), [posts])
+    let months = useMemo(() => ([...new Set(displayPosts.map(p => getYearMonth(p))
+        )]), [displayPosts])
+    console.log(months)
     let monthFirstIdxs = []
     let idx = 0
-    for (let i=0; i<posts.length;i++){
-        if (posts[i].acf.event_date.slice(0, -3) === months[idx]) {
+    for (let i=0; i<displayPosts.length;i++){
+        if (getYearMonth(displayPosts[i]) === months[idx]) {
             monthFirstIdxs.push(i)
             idx += 1
         }
     }
     // change active month and scroll position whenever active post change
     useEffect(() => {
-        if (posts.length > 0) {
-            setMonthIdx(months.indexOf(posts[activeIdx].acf.event_date.slice(0, -3)))
+        if (displayPosts.length > 0) {
+            setMonthIdx(months.indexOf(getYearMonth(displayPosts[activeIdx])))
             setScrollIdx(activeIdx)
         }
-    }, [activeIdx, posts, months])
+    }, [activeIdx, displayPosts, months])
     // change active post to the first post of the active month
     const nextMonth = () => {
         let newMonthIdx = Math.min(monthIdx + 1, months.length - 1)
@@ -110,7 +114,7 @@ const Timeline = ({posts, activeIdx, switchToSlide}) => {
             </div>
             <div css={TimelineBoxCSS}>
                 <animated.div scrollLeft={scroll} css={TimelineContentCSS}>
-                    {posts.map((post, i) => <TimelineItem key={i} idx={i} post={post}
+                    {displayPosts.map((post, i) => <TimelineItem key={i} idx={i} post={post}
                                                     isActive={i === activeIdx}
                                                     dotWidth={dotWidth}
                                                     lineWidth={lineWidth}

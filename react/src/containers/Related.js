@@ -1,46 +1,46 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react'
-import { animated, useSpring, useTransition } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 import { css } from '@emotion/react'
 
 import RelatedItem from '../components/RelatedItem'
 import { intersectNums } from '../utils'
 
-const Related = ({allPosts, posts, activeIdx}) => {
+const Related = ({allPosts, displayPosts, activeIdx}) => {
     const [relatedPosts, setRelatedPosts] = useState([])
     const [showRelated, setShowRelated] = useState(false)
 
     useEffect(() => { // find related posts and sort them based on revelancy
-        if (posts.length > 0) {
+        if (displayPosts.length > 0) {
             setShowRelated(false)
 
             setTimeout(() => {
-                let pairs = allPosts.map(p => [intersectNums(p.tags, posts[activeIdx].tags), p])
-                pairs = pairs.filter(p => p[0] > 0 && p[1] !== posts[activeIdx])
+                let pairs = allPosts.map(p => [intersectNums(p.tags, displayPosts[activeIdx].tags), p])
+                pairs = pairs.filter(p => p[0] > 0 && p[1] !== displayPosts[activeIdx])
                 pairs.sort((a, b) => b[0] - a[0])
 
                 setRelatedPosts(pairs.map(p => p[1]))
             }, 1000)
         }
-    }, [activeIdx, allPosts, posts])
+    }, [activeIdx, allPosts, displayPosts])
 
-    const transitions = useTransition(relatedPosts, {
-        from: {
-            opacity: 0,
-            height: 50,
-            innerHeight: 0,
-            transform: `translate3d(-10%, 0, 0)`,
-        },
-        enter: {
-            opacity: 1,
-            height: 100,
-            innerHeight: 50,
-            transform: `translate3d(0%, 0, 0)`,
-        },
-        leave: [{height: 50, opacity: 0, innerHeight: 0}],
-        trail: 400,
-        delay: 400,
-    })
+    // const transitions = useTransition(relatedPosts, {
+    //     from: {
+    //         opacity: 0,
+    //         height: 50,
+    //         innerHeight: 0,
+    //         transform: `translate3d(-10%, 0, 0)`,
+    //     },
+    //     enter: {
+    //         opacity: 1,
+    //         height: 100,
+    //         innerHeight: 50,
+    //         transform: `translate3d(0%, 0, 0)`,
+    //     },
+    //     leave: [{height: 50, opacity: 0, innerHeight: 0}],
+    //     trail: 400,
+    //     delay: 400,
+    // })
 
     const relatedSpring = useSpring({
         opacity: showRelated ? 1:0,
