@@ -3,6 +3,8 @@ import React from 'react'
 import {css} from '@emotion/react'
 import { animated } from '@react-spring/web'
 
+import { getDateFormat } from '../utils'
+
 const textWrapCSS = css`
     height: 100%;
     margin-left: 5vw;
@@ -53,7 +55,7 @@ const Slide = ({post, style}) => {
     return (
         <animated.div css={SlideCSS} style={style}>
             <div css={textWrapCSS}>
-                    <p css={dateCSS}>{post.acf.event_date}</p>
+                    <p css={dateCSS}>{getDateFormat(post.acf.event_date)}</p>
                     <a href={post.link} css={TitleCSS}>
                         {post.title.rendered}
                     </a>

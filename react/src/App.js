@@ -2,14 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 
 import Slider from './containers/Slider';
-
-const getDateFormat = (date) => {
-  if (date === null) {
-    return '1970-01-01'
-  } else {
-    return `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6)}`
-  }
-}
+import { getDateFormat } from './utils';
 
 function App() {
   const [loaded, setLoaded] = useState(false)

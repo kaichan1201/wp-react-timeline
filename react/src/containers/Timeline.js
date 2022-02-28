@@ -5,13 +5,14 @@ import { animated, useSpring } from 'react-spring'
 
 import TimelineItem from '../components/TimelineItem'
 import Arrow from '../components/Arrow'
+import { getDateFormat } from '../utils'
 
 const dotWidth = 25
 const lineWidth = 50
 const margin = 5
 const offset = 9
 
-const getYearMonth = p => `${p.acf.event_date.slice(0, 4)}/${p.acf.event_date.slice(4, 6)}`
+const getYearMonth = p => getDateFormat(p.acf.event_date, '/', true, true, false)
 
 const Timeline = ({displayPosts, activeIdx, switchToSlide}) => {
     const MainBoxCSS = css`
