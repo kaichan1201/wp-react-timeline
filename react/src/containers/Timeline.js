@@ -78,7 +78,7 @@ const Timeline = ({displayPosts, activeIdx, switchToSlide}) => {
 
     let months = useMemo(() => ([...new Set(displayPosts.map(p => getYearMonth(p))
         )]), [displayPosts])
-    console.log(months)
+        
     let monthFirstIdxs = []
     let idx = 0
     for (let i=0; i<displayPosts.length;i++){

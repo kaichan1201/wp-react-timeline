@@ -44,12 +44,15 @@ const Slider = ({allPosts, allCats}) => {
         // identify timeline cats
         let newTimelineCatIds = new Set()
         newTimelinePosts.forEach(p => {
-            p.categories.forEach(tagIdx => newTimelineCatIds.add(tagIdx))
+            p.categories.forEach(catId => {
+                if (catId === 112) return // don't add category 'timeline'
+                newTimelineCatIds.add(catId)
+            })
         })
         newTimelineCatIds = Array.from(newTimelineCatIds)
         
         // set timeline & display cats
-        let newTimelineCats = newTimelineCatIds.map(tagIdx => allCats.filter(tag => tag.id === tagIdx)[0])
+        let newTimelineCats = newTimelineCatIds.map(catId => allCats.filter(cat => cat.id === catId)[0])
         setTimelineCats(newTimelineCats)
         setDisplayCatIds(newTimelineCatIds)
     }, [allPosts, allCats])
